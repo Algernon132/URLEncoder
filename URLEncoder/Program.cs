@@ -86,7 +86,7 @@ namespace URLEncoder
             newVal.Add('$', "%24");
             newVal.Add(',', "%2C");
             /*Creates library of invalid characters and what they should be replaced with. This library
-             * can be easily updated as necessary.
+             * can easily be updated as necessary.
              */
         }
 
