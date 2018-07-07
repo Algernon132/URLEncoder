@@ -29,6 +29,26 @@ namespace URLEncoder
                 Console.WriteLine("\nWhat is the activity name?");
                 actName = Console.ReadLine();
 
+                projName = lib.MakeSafe(projName);
+                actName = lib.MakeSafe(actName);
+
+                if(projName == null || actName == null) //if either string was found to have a control character by MakeSafe
+                {
+                    Console.WriteLine("An invalid control character was detected.");
+                }
+                else
+                {
+                    string safeURL = "https://companyserver.com/content/" + projName + "/files/" + actName + "/" + actName + "Report.pdf";
+                    Console.WriteLine(safeURL);
+                }
+
+                Console.WriteLine("Would you like to create a URL again?\nY for yes, any other key for no.");
+                string againString = Console.ReadLine();
+                if(againString != "Y")
+                {
+                    again = false;
+                }
+
             } while (again == true);
 
         }
@@ -54,7 +74,7 @@ namespace URLEncoder
             newVal.Add('^', "%5E");
             newVal.Add('[', "%5B");
             newVal.Add(']', "%5D");
-            newVal.Add('\'', "%60");  //converts '
+            newVal.Add('`', "%60");  
             newVal.Add(';', "%3B");
             newVal.Add('/', "%2F");
             newVal.Add('?', "%3F");
@@ -70,7 +90,7 @@ namespace URLEncoder
              */
         }
 
-        public string swapChar (char oldChar)
+        public string SwapChar (char oldChar)
         {
 
             string returnString;
@@ -83,6 +103,23 @@ namespace URLEncoder
             {
                 return oldChar.ToString();  //returns original character as a string
             }
+        }
+
+        public string MakeSafe(string oldString)
+        {
+            string safeString = "";
+
+            foreach (char c in oldString)
+            {
+                if (Char.IsControl(c))
+                {
+                    return null;    //indicates a control character was detected
+                }
+
+                safeString += SwapChar(c);  //add safe character to safeString
+            }
+
+            return safeString;
         }
     }
 }
